@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@shopify/draggable@1.0.0-beta.11/lib/draggable.bundle.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css" integrity="sha384-vSIIfh2YWi9wW0r9iZe7RJPrKwp6bG+s9QZMoITbCckVJqGCCRhc+ccxNcdpHuYu" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.js" integrity="sha256-DrT5NfxfbHvMHux31Lkhxg42LY6of8TaYyK50jnxRnM=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+  </head>
+<body>
+    <h1 style="margin-top: 30px; margin-bottom: 70px;" id="year_indicator">Year 1</h1>
+        <div style="height: 70px;"></div>
+
+    <h5 id="select_card" style="text-align: center;">Drag and drop the card on the top left hand corner into one at the species</h5>
+
+
+    <div id="cards" style="display: flex; align-items: center;">
+        <div><img class="cards" v-for="card in cards" :fruit="card.fruit" :id="card.tagnum" :tag="card.tagnum" :src="card.picture" :points="card.points" onclick="chosen(this)" draggable="true" ondragstart="drag(event)"></div>
+        <button type="button" class="btn btn-primary" onclick="discarder()">Discard <i style="margin-left: 5px;" class="far fa-trash-alt"></i></button>
+    </div>
+
+<div id="species-container">
+
+  <div id="discard" ondrop="trashdrop(event)" ondragover="allowDrop(event, 'trash')" style="border: 2px solid black; min-height: 194px; min-width: 144px; display: flex; flex-direction: column; text-align: center;">
+    <h4>Discard pile</h4>
+    <div>
+    <img class="cards" v-for="card in cards.trash" :src="card.picture" :points="card.points" data-toggle="tooltip" :title="card.fruit + ', ' + card.points + ' points'">
+  </div>
+  </div>
+  <div class="anim-container">
+    <div>
+      <img src="/assets/species_1.png" id="species_1_img" style="margin-top: 22px; width: 140px;">
+      <div id="species_1" class="species"><div id="yem" :class="{'disabled' : !animal_status.species_1.exist}">
+          
+      </div>
+          <div :class="{'disableddiv' : !animal_status.species_1.exist, 'species_cards' : animal_status.species_1.exist}" ondrop="drop(event)" ondragover="allowDrop(event, 'species_1')">
+            <img v-if="animal_status.species_1.exist" class="cards" v-for="card in cards.species_1" :src="card.picture" :points="card.points" data-toggle="tooltip" :title="card.fruit + ', ' + card.points + ' points'">
+            <div v-if="!animal_status.species_1.exist" class="dead">
+              <h1></h1>
+            </div>
+          </div>
+  
+      </div>
+    </div>
+  </div>
+  <div class="anim-container">
+    <div>
+      <img src="/assets/species_2.png" id="species_2_img" style="width: 170px;">
+      <div id="species_2" class="species"><div id="yem" :class="{'disabled' : !animal_status.species_2.exist}">
+  
+      </div>
+          <div  :class="{'disableddiv' : !animal_status.species_2.exist, 'species_cards' : animal_status.species_2.exist}" ondrop="drop(event)" ondragover="allowDrop(event, 'species_2')">
+              <img class="cards" v-if="animal_status.species_2.exist" v-for="card in cards.species_2" :src="card.picture" :points="card.points" data-toggle="tooltip" :title="card.fruit + ', ' + card.points + ' points'">
+              <div v-if="!animal_status.species_2.exist" class="dead">
+                <h1></h1>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="anim-container">
+    <div>
+      <img src="/assets/species_3.png" id="species_3_img" style="width: 170px;">
+      <div id="species_3" class="species"><div id="yem" :class="{'disabled' : !animal_status.species_3.exist}">
+  
+      </div>
+          <div  :class="{'disableddiv' : !animal_status.species_3.exist, 'species_cards' : animal_status.species_3.exist}" ondrop="drop(event)" ondragover="allowDrop(event, 'species_3')">
+              <img class="cards" v-if="animal_status.species_3.exist" v-for="card in cards.species_3" :src="card.picture" :points="card.points" data-toggle="tooltip" :title="card.fruit + ', ' + card.points + ' points'">
+              <div v-if="!animal_status.species_3.exist" class="dead">
+                <h1></h1>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="anim-container">
+    <div>
+      <img src="/assets/species_4.png" id="species_4_img" style="width: 170px;">
+      <div id="species_4"  class="species"><div id="yem" :class="{'disabled' : !animal_status.species_4.exist}">
+  
+      </div>
+          <div  :class="{'disableddiv' : animal_status.species_4.dead, 'species_cards' : !animal_status.species_4.dead}" ondrop="drop(event)" ondragover="allowDrop(event, 'species_4')">
+              <img class="cards" v-if="animal_status.species_4.exist" v-for="card in cards.species_4" :src="card.picture" :points="card.points" >
+              <div v-if="!animal_status.species_4.exist" class="dead">
+                <h1></h1>
+              </div>
+            </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="anim-container">  
+    <div v-if="animal_status.species_5.exist">
+      <img src="/assets/species_5.png" id="species_5_img" style="width: 170px;">
+      <div id="species_5" class="species"><div id="yem" :class="{'disabled' : animal_status.species_5.dead}">
+  
+      </div>
+          <div :class="{'disableddiv' : animal_status.species_5.dead, 'species_cards' : !animal_status.species_5.dead}" ondrop="drop(event)" ondragover="allowDrop(event, 'species_5')">
+              <img class="cards" v-if="!animal_status.species_5.dead" v-for="card in cards.species_5" :src="card.picture" :points="card.points" >
+              <div v-if="animal_status.species_5.dead" class="dead">
+                <h1></h1>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="anim-container">
+    <div v-if="animal_status.species_6.exist">
+      <img src="/assets/species_6.png" id="species_6_img" style="width: 170px;">
+      <div id="species_6" class="species"><div id="yem" :class="{'disabled' : animal_status.species_6.dead}">
+  
+      </div>
+          <div :class="{'disableddiv' : animal_status.species_6.dead, 'species_cards' : !animal_status.species_6.dead}" ondrop="drop(event)" ondragover="allowDrop(event, 'species_6')">
+              <img class="cards" v-if="!animal_status.species_6.dead" v-for="card in cards.species_6" :src="card.picture" :points="card.points" >
+              <div v-if="animal_status.species_6.dead" class="dead">
+                <h1></h1>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+<div class="modal fade" id="dead_animals" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Which species have become extinct (has less than 5 points)</h3>
+        <h4 style="text-align: center;" id="answer_display">....</h4>
+        <div class="form-check" v-for="animal in animal_status" v-if="animal.exist">
+          <div id="answer-input">
+          <input class="form-check-input" v-model="animal.dead" type="checkbox" value="" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            {{'_' + animal.name}}
+          </label>
+
+
+          <div style="margin-left: 10%">
+            <laber>Food Points</laber>
+              <input type="text" v-model="animal.entry_3" value=" " style="width: 50px;" class="form-control" placeholder="Hearts" aria-label="Extra_lives" aria-describedby="basic-addon1">
+          </div>
+
+            <div id="extra_lives" style="margin-left: 10%">
+              <laber>Extra points</laber>
+              <input type="text" v-model="animal.entry_1" style="width: 50px;" class="form-control" placeholder="Extra_points" aria-label="Extra_lives" aria-describedby="basic-addon1">
+            </div>
+
+          <div style="margin-left: 10%">
+                <input type="text" v-model="animal.entry_2" value=" " style="width: 50px;" class="form-control" placeholder="Hearts" aria-label="Extra_lives" aria-describedby="basic-addon1">
+          </div>
+          <label>
+            <i class="fas fa-heart" style="color: red;"></i>
+          </label>
+        </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" onclick="next_year()" class="btn btn-success">Okay</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="invasive_species_alert" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">OH NO!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="text-align: left; margin-bottom: 20px">
+        <h5>
+        Oh no! A new species has made its way into your forest, {{alert.new}}. 
+        It’s a pesky tiny species with a very specific diet. 
+        <ul v-if="alert.new === 'species E'">
+          <li>It can only eat blue foods and only the foods with a tiny value of 1. </li>
+          <li>It’s incredibly good at finding its food. All blue cards with a value of 1 must go to Species E. </li>
+          <li>Being small, it only requires 3 food points to survive.</li>
+          <li>Your goal is still to keep Species A-D alive</li>
+        </ul>
+        <ul v-if="alert.new === 'species F'">
+          <li>It can only eat all foods with a value of 3. </li>
+          <li>It’s incredibly good at finding its food. All cards with a value of 3 must go to Species E. </li>
+          <li>Being small, it only requires 3 food points to survive.</li>
+          <li>Your goal is still to keep Species A-D alive</li>
+        </ul>
+        </h5>
+        <div style="text-align: center;">
+          <img :src="alert.new_img">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+
+
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="record_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h3 id="obs-pop-h3">Record your total food points by species and year in the data table :</h3>
+          <h5 id="obs-pop-h5">
+            <ol>
+              <li>For each species, add up the number of points from each food card. Remember, food cards have different 
+                point values on them, so be careful to count the number on the card and not just the card itself.</li>
+                
+              <li>Type the total number of food points for each species in the data table.
+                 Be sure to record the total in the correct species column.</li>
+              <li>If a species does not get 5 or more food points, then they are left hungry and do not have enough energy to survive. 
+                Click a heart to cross out a heart on your game board. If they have NO hearts remaining and do not get 5 points, 
+                then sadly the species has died out. Please click the box “Dead”</li>
+              <li>If a species gets extra food points, then they can store that extra energy. For every 2 extra food points, give your 
+                species an extra life by drawing a heart. (For example: if your species gets 7 total food points, subtract the 5 points 
+                they use in order to survive. This leaves 2 remaining points, which gives that species one extra life. If your species gets 
+                9 total food points, it will get 2 extra lives. If your species gets 8 food items total, it still only gets 1 extra life.) </li>
+            </ol>
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="show_table()" data-bs-dismiss="modal">Okay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="endofround" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5>
+          Congratulations! You have completed the round. Let’s reflect on what 
+          happened to the species in your forest.
+        </h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="next_year1()">Next round</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="extinctfeed" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5 >
+            You cannot feed this species since it is dead. 
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="show_table()" data-bs-dismiss="modal">Okay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="end_of_game" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">The End</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Congratulations! You have completed the Invasive Species Game.
+        We hope you have learned about how an invasive species can ruin the ecosystem 
+        and make it hard for the native species to survive.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" onclick="location.href = '/index.html';">Play again</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="wrong_food" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="wrong_food_description">
+         ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="start_instruction" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h3>Instructions!</h3>
+          <h5>
+            <ul>
+              <li>Pick a resource card from the upper right, and feed it to one of the species.</li>
+              <li>Each species can only eat certain colors, so be sure to place your card on a species that can eat it.</li>
+              <li>Each card may have a food point value of 1 through 3. </li>
+              <li>Once you place that card, you cannot move it to a different species. </li>
+              <li>You will place 12 cards in each “year” of the game.</li>
+              <li>Each species needs 5 food points to survive each year. Your goal is to keep all species alive.</li>
+              <li>You’ll play two rounds of the game, each one lasting three “years”.</li>
+            </ul>
+          </h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal">Okay</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+  <div id="data">
+  <h2 id="round_1_heading" style="display: none;">Round 1</h2>
+  <table id="table1" v-if="info.exist" class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" class="head-cells"></th>
+        <th scope="col" class="head-cells">Species A</th>
+        <th scope="col" class="head-cells">Species B</th>
+        <th scope="col" class="head-cells">Species C</th>
+        <th scope="col" class="head-cells">Species D</th>
+      </tr>
+    </thead>
+    <tbody id="table">
+      <tr>
+        <th scope="row">Year 1</th>
+        <td><input type="text" placeholder="Food points" v-model="info.cell01"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell02"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell03"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell04"></td>
+      </tr>
+      <tr>
+        <th scope="row">Year 2</th>
+        <td><input type="text" placeholder="Food points" v-model="info.cell11"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell12"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell13"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell14"></td>
+
+      </tr>
+      <tr>
+        <th scope="row">Year 3</th>
+        <td><input type="text" placeholder="Food points" v-model="info.cell21"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell22"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell23"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell24"></td>
+      </tr>
+      <tr>
+        <td id="sandwhich" colspan="2">.</td>
+      </tr>
+      <tr>
+        <th scope="row">
+          Extra Lives
+          </th>
+        <td>
+          <i v-for="heart in info.hearts1" id="hearts1" onclick="add_heart(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts2" id="hearts2" onclick="add_heart(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts3" id="hearts3" onclick="add_heart(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts4" id="hearts4" onclick="add_heart(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+      </tr>
+      <tr id="check-row">
+        <th scope="row">Dead</th>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_1" v-model="info.dead.status1" ></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_2" v-model="info.dead.status2" ></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_3" v-model="info.dead.status3" ></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_4" v-model="info.dead.status4" ></td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+  <h2 id="round_2_heading" style="margin-top:40px; display: none;">Round 2</h2>
+  <table id="table2" v-if="info.exist" class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col" class="head-cells"></th>
+        <th scope="col" class="head-cells">Species A</th>
+        <th scope="col" class="head-cells">Species B</th>
+        <th scope="col" class="head-cells">Species C</th>
+        <th scope="col" class="head-cells">Species D</th>
+        <th scope="col" class="head-cells">Species E</th>
+        <th scope="col" class="head-cells" v-if="info.species_F">Species F</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Year 1</th>
+        <td><input type="text" placeholder="Food points" v-model="info.cell01"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell02"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell03"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell04"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell05"></td>
+        <td v-if="info.species_F"><input type="text" placeholder="Food points" v-model="info.cell06"></td>
+      </tr>
+      <tr>
+        <th scope="row">Year 2</th>
+        <td><input type="text" placeholder="Food points" v-model="info.cell11"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell12"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell13"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell14"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell15"></td>
+        <td v-if="info.species_F"><input type="text" placeholder="Food points" v-model="info.cell16"></td>
+      </tr>
+      <tr>
+        <th scope="row">Year 3</th>
+        <td><input type="text" placeholder="Food points" v-model="info.cell21"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell22"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell23"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell24"></td>
+        <td><input type="text" placeholder="Food points" v-model="info.cell25"></td>
+        <td v-if="info.species_F"><input type="text" placeholder="Food points" v-model="info.cell26"></td>
+      </tr>
+      <tr id="check-row">
+        <th scope="row">Dead</th>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_1" v-model="info.dead.status1"></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_2" v-model="info.dead.status2"></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_3" v-model="info.dead.status3"></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_4" v-model="info.dead.status4"></td>
+        <td><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_5" v-model="info.dead.status5"></td>
+        <td v-if="info.species_F"><input type="checkbox" class="checkbox" onclick="dead_status(this)" name="species_6" v-model="info.dead.status6"></td>
+      </tr>
+      <tr>
+        <td id="sandwhich" colspan="0">.</td>
+
+      </tr>
+      <tr>
+        <th scope="row">
+          Extra Lives
+          </th>
+        <td>
+          <i v-for="heart in info.hearts1" id="hearts1" onclick="add_heart2(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts2" id="hearts2" onclick="add_heart2(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts3" id="hearts3" onclick="add_heart2(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts4" id="hearts4" onclick="add_heart2(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td>
+          <i v-for="heart in info.hearts5" id="hearts5" onclick="add_heart2(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+        <td v-if="info.species_F">
+          <i v-for="heart in info.hearts6" id="hearts6" onclick="add_heart2(this)" :tag="heart.name"  :class="heart.status"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div id="controls">
+<div><button type="button" onclick="window.location.href='/index.html'" class="btn btn-primary" ><h3 id="btn-text">Restart game</h3></button></div>
+<div><button type="button" style="display: none;" class="btn btn-primary" id="next-btn" onclick="next_year()"><h3 id="btn-text">Next year</h3></button></div>
+</div>
+</body>
+<script src="app.js"></script>
+
+</html>

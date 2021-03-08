@@ -1,0 +1,227 @@
+body{
+    margin: 0;
+    font-family: 'Bubblegum Sans', cursive !important;
+}
+
+#cards{
+    position: absolute;
+    top: 20px;
+    left: 0;
+}
+
+#discard {
+    position: absolute;
+    top: 20px;
+    right: 0;
+}
+
+.species_cards {
+    width: 100%;
+    height: 350px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+}
+
+.disableddiv {
+    width: 100%;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid black;
+}
+
+.species_cards .cards:first-child{
+    margin-top: 50px !important;
+}
+
+.heart {
+    font-size: 20px !important;
+    color:rgb(255, 55, 55);
+    margin: 0 3px;
+  }
+
+.table .head-cells {
+    width: 20% !important;
+}
+
+
+
+.table td, .table th{
+    border: black solid 1px !important;
+}
+.table #sandwhich {
+    color: white;
+    border-left: rgb(255, 255, 255) solid 1px !important;
+    border-right: rgb(255, 255, 255) solid 1px !important;
+}
+
+#table2 .head-cells {
+    width: 14.285714286% !important;
+}
+
+#species-container p {
+    color: white;
+}
+
+.checkbox {
+    width: 20px !important;
+    margin-left: 50% !important;
+    transform: translate(-10px, 0px);
+}
+
+.check-div {
+    width: 100%;
+    height: 100%;
+}
+
+.species_cards .cards{
+    margin-top: -150px;
+    width: 120px;
+    height: 180px;
+}
+
+
+h1{
+    text-align: center;
+
+}
+
+#invasive_species_alert ul{
+    margin-top: 20px;
+}
+
+#cards .cards:first-child{
+    margin-top: 0px !important;
+}
+
+#discard .cards:first-child{
+    margin-top: 0px !important;
+}
+
+#discard .cards,#cards .cards {
+    width: 120px;
+    height: 180px;
+    margin: 0px 10px;
+    margin-top: -179px;
+    display: flex;
+}
+
+#discard .cards {
+    margin-top: -170px !important;
+}
+
+
+
+
+#data {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.table {
+    width: 80vw !important;
+    text-align: center;
+}
+
+    .table td {
+        position: relative;
+    }
+  
+  .table td input {
+    text-align: center;
+    position: absolute;
+    display: block;
+    top:0;
+    left:0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+
+#answer-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.img-container {
+    height: 100%;
+}
+
+
+.species, i {
+    font-size: 25px !important;
+}
+
+.anim-container {
+    width: 170px;
+    margin: 20px;
+}
+
+.dead {
+    background-color: rgb(167, 167, 167);
+    width: 100%;
+    height: 100%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.disabled {
+    background-color: red !important;
+}
+
+#species-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+}
+
+h3 {
+    text-align: center;
+}
+#yem {
+    background-color: rgb(4, 179, 4);
+    text-align: center;
+}
+
+#discard .cards,#cards .cards:hover {
+    border: 2px solid rgb(58, 195, 58);
+}
+
+#yem:hover{
+    background-color: rgb(2, 200, 35);
+}
+
+
+
+.species h6 {
+    color: white;
+}
+
+
+.species {
+    border-bottom: 2px solid black;
+}
+
+
+#controls button {
+    width: 180px;
+    height: 60px;
+    margin: 20px;
+}
+
+#controls {
+    display: flex;
+    justify-content: space-between;
+}

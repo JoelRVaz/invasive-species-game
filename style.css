@@ -1,0 +1,55 @@
+body {
+  font-family: 'Bubblegum Sans', cursive;
+  background-image: url("/assets/jungle.png");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+}
+h1 {
+  width: 70%;
+  font-size: 70px;
+  text-align: center;
+  color: rgb(0, 109, 5);
+  margin-bottom: 0;
+}
+
+h2{
+  width: 70%;
+  text-align: center;
+  color: rgb(255, 255, 255);
+  background-color: #019e01a6;
+  padding: 15px;
+  border-radius: 30px;
+  margin-bottom: 55px;
+}
+
+#play-btn {
+  font-size: 50px;
+  background-color: rgb(0, 180, 0);
+  color: white;
+  padding: 10px 0px;
+  width: 180px;
+  margin-top: 4vh;
+  text-align: center;
+  transition: width 0.2s;
+  cursor: pointer;
+  border-radius: 25px;
+  border: 6px solid white;
+}
+.tooltip {
+  position: fixed;
+}
+
+#content{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items:  center;
+  justify-content: center;
+}
+
+#play-btn:hover {
+  width: 230px;
+}

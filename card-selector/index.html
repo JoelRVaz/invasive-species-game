@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Invasive species sim</title>
+    <script src="app.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <!--APIs-->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+  </head>
+  <body>
+    <h1>Card selector</h1>
+    <h5>Please select 12 cards</h5>
+    <div id="card-container">
+        <img v-for="card in cards" :fruit="card.fruit" :pic="card.picture" :points="card.points" onclick="turn_card(this)">
+    </div>
+  </body>
+  <script src="main.js"></script>
+</html>
